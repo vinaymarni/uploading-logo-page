@@ -1,8 +1,33 @@
+import React, { useState } from "react";
 import './App.css';
+import Loader from 'react-loader-spinner'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
 function App() {
-  const fileHandler = (event) => {
-    console.log(event)
+  const [url, setImage_url] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const uploadImage = async e => {
+    const files = e.target.files
+    const data = new FormData()
+    data.append('file', files[0])
+    data.append('upload_preset', 'vinaykumar')
+    data.append('cloud_name', 'di01osmzz');
+    setLoading(true)
+    var imgurl = 'https://api.cloudinary.com/v1_1/di01osmzz/image/upload';
+    const config = {
+      method: "POST",
+      body: data 
+  };
+    const res = await fetch(imgurl, config)
+    const file = await res.json()
+    console.log(file)
+    setImage_url(file.url)
+    setLoading(false)
+  }
+
+  const DeleteLogo = () =>{
+    setImage_url(null)
   }
   return (
     <div className="main-container">
@@ -18,21 +43,38 @@ function App() {
                 <div className="profile-container">
                   <h2 className="logo-heading">Add logo</h2>
                   <div className="profile" >
-                    <img alt="" src='https://res.cloudinary.com/di01osmzz/image/upload/v1649318682/bx_bxs-image-add_is04eg.png' />
+
+                    {url ? (
+                      loading ? (
+                        <Loader type="TailSpin" color="#00BFFF" height={50} width={60} />
+                         ) : ( <img src={url} alt="" className="profile" />)
+                    ) : (
+                      <img alt="" src='https://res.cloudinary.com/di01osmzz/image/upload/v1649318682/bx_bxs-image-add_is04eg.png' />
+                    )}
+                    
+                    
                   </div>
                   <h3 className='resolution'>Resolution 800x800 px</h3>
                 </div>
-                <div className="button-container">
-                  <button className="delete" type='button'>
-                    <img alt="" src="https://res.cloudinary.com/di01osmzz/image/upload/v1649399143/delete_pp824j.png" className="delete-icon" />
-                    Delete
-                  </button>
-                  <button type='file' data-test-type="primary" data-test="upload-btn" className="browse">
-                    <img alt="" src="https://res.cloudinary.com/di01osmzz/image/upload/v1649396968/Group_13135_xjem2h.png" className="icon" />
-                    Browse
-                  </button>
-
-                  
+                <div className="button-container">                              
+                  <div>
+                    <button className="delete" type='button' onClick={DeleteLogo} >
+                      <img alt="" src="https://res.cloudinary.com/di01osmzz/image/upload/v1649399143/delete_pp824j.png" className="delete-icon" />
+                      Delete
+                    </button>                   
+                    <input
+                      id="logo"
+                      type="file"
+                      onChange={uploadImage}
+                      style={{display: 'none'}}
+                    />                   
+                    <button type='file' className="browse">
+                      <label htmlFor="logo" >
+                        <img alt="" src="https://res.cloudinary.com/di01osmzz/image/upload/v1649396968/Group_13135_xjem2h.png" className="icon" />
+                        Browse
+                      </label>
+                    </button>                    
+                  </div>
 
                 </div>
               </div>

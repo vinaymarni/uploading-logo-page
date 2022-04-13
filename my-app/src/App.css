@@ -135,14 +135,12 @@
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: #FFFFFF;
 }
-
 .profile-box{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-
 
 .details-box{
   display: flex;
