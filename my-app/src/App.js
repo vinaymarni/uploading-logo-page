@@ -3,10 +3,32 @@ import './App.css';
 import Loader from 'react-loader-spinner'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
+
+
+
+
 function App() {
+  let customerDetails = 
+  {
+    id: "",
+    name: "",
+    country: "",
+    logo_url: "",
+  }
   const [url, setImage_url] = useState('')
   const [loading, setLoading] = useState(false)
+  const [details, setDetails] = useState([])
 
+  const getCustomerId = (e) =>{  
+    customerDetails.id = e.target.value  
+  }
+  const getCustomerName = (e) =>{
+    customerDetails.name = e.target.value
+  }
+  const getCustomerCountry = (e) =>{
+    customerDetails.country = e.target.value
+  }
+  
   const uploadImage = async e => {
     const files = e.target.files
     const data = new FormData()
@@ -21,14 +43,19 @@ function App() {
   };
     const res = await fetch(imgurl, config)
     const file = await res.json()
-    console.log(file)
     setImage_url(file.url)
     setLoading(false)
-  }
+    customerDetails.logo_url = file.url
 
+   
+    
+    setDetails([...details, customerDetails])
+    
+  }
   const DeleteLogo = () =>{
     setImage_url(null)
   }
+  console.log(details)
   return (
     <div className="main-container">
       <div className="App">
@@ -43,16 +70,13 @@ function App() {
                 <div className="profile-container">
                   <h2 className="logo-heading">Add logo</h2>
                   <div className="profile" >
-
                     {url ? (
                       loading ? (
                         <Loader type="TailSpin" color="#00BFFF" height={50} width={60} />
                          ) : ( <img src={url} alt="" className="profile" />)
                     ) : (
                       <img alt="" src='https://res.cloudinary.com/di01osmzz/image/upload/v1649318682/bx_bxs-image-add_is04eg.png' />
-                    )}
-                    
-                    
+                    )}                                  
                   </div>
                   <h3 className='resolution'>Resolution 800x800 px</h3>
                 </div>
@@ -75,15 +99,14 @@ function App() {
                       </label>
                     </button>                    
                   </div>
-
                 </div>
               </div>
               <div className="details-box" >
                 <h2 className="logo-heading">Add details</h2>
-                <input type="text" className='input' placeholder="Customer ID" />
-                <input type="text" className='input' placeholder="Customer Name" />              
-                <input list="inputs-drop-down" type="text" className="input" placeholder="Country"/>
-                <datalist className="input"  id="inputs-drop-down">
+                <input type="text" className='input' placeholder="Customer ID" onChange={getCustomerId} />
+                <input type="text" className='input' placeholder="Customer Name" onChange={getCustomerName} />              
+                <input list="countries-drop-down" type="text" className="input" placeholder="Country" onChange={getCustomerCountry} />
+                <datalist className="input"  id="countries-drop-down">
                   <option value="America" >America</option>
                   <option value="India">India</option>
                   <option value="Australia">Australia</option>
