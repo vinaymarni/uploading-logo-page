@@ -3,10 +3,6 @@ import './App.css';
 import Loader from 'react-loader-spinner'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 
-
-
-
-
 function App() {
   let customerDetails = 
   {
@@ -45,12 +41,8 @@ function App() {
     const file = await res.json()
     setImage_url(file.url)
     setLoading(false)
-    customerDetails.logo_url = file.url
-
-   
-    
-    setDetails([...details, customerDetails])
-    
+    customerDetails.logo_url = file.url  
+    setDetails([...details, customerDetails]) 
   }
   const DeleteLogo = () =>{
     setImage_url(null)
